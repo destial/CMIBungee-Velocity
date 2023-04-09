@@ -6,7 +6,7 @@
 
     <groupId>net.Zrips</groupId>
     <artifactId>CMIVelocity</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2.2</version>
     <packaging>jar</packaging>
 
     <name>CMIVelocity</name>
