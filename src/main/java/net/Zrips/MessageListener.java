@@ -1,4 +1,4 @@
-package net.Zrips.cmibungeevelocity;
+package net.Zrips;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;

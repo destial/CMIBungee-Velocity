@@ -1,4 +1,4 @@
-package net.Zrips.cmibungeevelocity;
+package net.Zrips;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -34,7 +34,7 @@ public class MessageHandling {
         out.writeUTF("CMIServerSwitchEvent");
         out.writeUTF(player.getUniqueId().toString());
         out.writeUTF(player.getUsername());
-        out.writeUTF((serverFrom == null) ? "" : serverFrom.getServerInfo().getName());
+        out.writeUTF(serverFrom == null ? "" : serverFrom.getServerInfo().getName());
         out.writeUTF(con.getServerInfo().getName());
         for (final RegisteredServer one : CMIB.getInstance().getProxy().getAllServers()) {
             if (one.getPlayersConnected().isEmpty()) {

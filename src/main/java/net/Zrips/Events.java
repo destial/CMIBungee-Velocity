@@ -1,4 +1,4 @@
-package net.Zrips.cmibungeevelocity;
+package net.Zrips;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.KickedFromServerEvent;

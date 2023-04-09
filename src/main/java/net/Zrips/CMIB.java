@@ -1,11 +1,10 @@
-package net.Zrips.cmibungeevelocity;
+package net.Zrips;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import org.slf4j.Logger;
 
@@ -24,8 +23,8 @@ public class CMIB {
     private final Logger logger;
     private final ProxyServer server;
 
-    private ChannelIdentifier fromProxy;
-    private ChannelIdentifier fromServer;
+    private MinecraftChannelIdentifier fromProxy;
+    private MinecraftChannelIdentifier fromServer;
     private MessageHandling messageHandling;
 
     @Inject
@@ -59,11 +58,11 @@ public class CMIB {
         return messageHandling;
     }
 
-    public ChannelIdentifier getFromProxyChannel() {
+    public MinecraftChannelIdentifier getFromProxyChannel() {
         return fromProxy;
     }
 
-    public ChannelIdentifier getFromServerChannel() {
+    public MinecraftChannelIdentifier getFromServerChannel() {
         return fromServer;
     }
 
