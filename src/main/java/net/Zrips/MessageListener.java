@@ -5,6 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
+import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
@@ -87,6 +88,25 @@ public class MessageListener {
                 ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
                 if (connection != null && connection.getServerInfo() != null) {
                     connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out2.toByteArray());
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    public void on(PlayerChatEvent event) {
+        if (event.getMessage().startsWith("/")) {
+            Player player = event.getPlayer();
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("CMIBungeeCommandEvent");
+            out.writeUTF(player.getUniqueId().toString());
+            out.writeUTF(player.getUsername());
+            out.writeUTF(event.getMessage());
+            for (final RegisteredServer srv : CMIB.getInstance().getProxy().getAllServers()) {
+                final Player proxyPlayer = srv.getPlayersConnected().iterator().next();
+                ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
+                if (connection != null && connection.getServerInfo() != null) {
+                    connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
                 }
             }
         }
