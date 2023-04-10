@@ -62,6 +62,7 @@ public class CMIB {
         return fromProxy;
     }
 
+    /// Not sure what this is used for, but it is in the main source code
     public MinecraftChannelIdentifier getFromServerChannel() {
         return fromServer;
     }

@@ -30,18 +30,19 @@ public class Events {
         final RegisteredServer target = event.getServer();
         if (target == null)
             return;
+
         final RegisteredServer previous = event.getPreviousServer().orElse(null);
         if (previous == null) {
             String serverName = "unknown";
             final ServerInfo info = target.getServerInfo();
-            if (info != null && info.getName() != null) {
+            if (info != null && info.getName() != null)
                 serverName = info.getName();
-            }
 
             CMIB.getInstance().getMessageHandling().sendServerEvent(event.getPlayer(), serverName, "ServerConnectEvent");
-        } else {
-            onServerSwitchEvent(event.getPlayer(), previous);
+            return;
         }
+
+        onServerSwitchEvent(event.getPlayer(), previous);
     }
 
     public void onServerSwitchEvent(final Player player, final RegisteredServer from) {

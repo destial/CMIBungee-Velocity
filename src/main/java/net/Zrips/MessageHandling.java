@@ -14,14 +14,14 @@ public class MessageHandling {
         out.writeUTF(player.getUsername());
         out.writeUTF(serverName);
         for (final RegisteredServer one : CMIB.getInstance().getProxy().getAllServers()) {
-            if (one.getPlayersConnected().isEmpty()) {
+            if (one.getPlayersConnected().isEmpty())
                 continue;
-            }
+
             final Player proxyPlayer = one.getPlayersConnected().iterator().next();
             final ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
-            if (connection == null || connection.getServerInfo() == null) {
+            if (connection == null || connection.getServerInfo() == null)
                 continue;
-            }
+
             connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
         }
     }
@@ -30,6 +30,7 @@ public class MessageHandling {
         ServerConnection con = player.getCurrentServer().orElse(null);
         if (con == null)
             return;
+
         final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("CMIServerSwitchEvent");
         out.writeUTF(player.getUniqueId().toString());
@@ -37,18 +38,20 @@ public class MessageHandling {
         out.writeUTF(serverFrom == null ? "" : serverFrom.getServerInfo().getName());
         out.writeUTF(con.getServerInfo().getName());
         for (final RegisteredServer one : CMIB.getInstance().getProxy().getAllServers()) {
-            if (one.getPlayersConnected().isEmpty()) {
+            if (one.getPlayersConnected().isEmpty())
                 continue;
-            }
+
             final Player proxyPlayer = one.getPlayersConnected().iterator().next();
             final ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
-            if (connection == null || connection.getServerInfo() == null) {
+            if (connection == null || connection.getServerInfo() == null)
                 continue;
-            }
+
             connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
         }
-        if (serverFrom != null) {
-            serverFrom.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
-        }
+
+        if (serverFrom == null)
+            return;
+
+        serverFrom.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
     }
 }

@@ -17,9 +17,8 @@ public class MessageListener {
     @Subscribe
     public void on(final PluginMessageEvent event) {
         ChannelIdentifier tag = event.getIdentifier();
-        if (!tag.getId().equalsIgnoreCase("BungeeCord") && !tag.getId().equalsIgnoreCase("bungeecord:main")) {
+        if (!tag.getId().equalsIgnoreCase("BungeeCord") && !tag.getId().equalsIgnoreCase("bungeecord:main"))
             return; // I have no idea if this is even gonna work
-        }
 
         String senderAddress = "";
         if (event.getSource() instanceof Player) {
@@ -36,14 +35,17 @@ public class MessageListener {
             RegisteredServer server = null;
             for (final RegisteredServer one : CMIB.getInstance().getProxy().getAllServers()) {
                 String address = one.getServerInfo().getAddress().getAddress().getHostAddress() + ":" + one.getServerInfo().getAddress().getPort();
-                if (address.equalsIgnoreCase(senderAddress)) {
+                if (address.equalsIgnoreCase(senderAddress))
                     server = one;
-                }
             }
-            if (server == null || server.getPlayersConnected().isEmpty()) {
+
+            if (server == null || server.getPlayersConnected().isEmpty())
                 return;
-            }
+
             for (final RegisteredServer srv : CMIB.getInstance().getProxy().getAllServers()) {
+                if (srv.getPlayersConnected().isEmpty())
+                    continue;
+
                 final ServerInfo serverInfo = srv.getServerInfo();
                 String info = serverInfo.getName() + ";:" + serverInfo.getAddress().getAddress().getHostAddress() + ";:" + serverInfo.getAddress().getPort() + ";:MOTD is not supported on Velocity!";
                 final ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -52,29 +54,33 @@ public class MessageListener {
                 out.writeUTF(info);
                 final Player proxyPlayer = server.getPlayersConnected().iterator().next();
                 ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
-                if (connection != null && connection.getServerInfo() != null) {
-                    connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
-                }
+                if (connection == null || connection.getServerInfo() == null)
+                    continue;
+
+                connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
             }
         }
         else if (subChannel.equalsIgnoreCase("CMIPlayerListRequest")) {
             RegisteredServer server = null;
             for (final RegisteredServer one : CMIB.getInstance().getProxy().getAllServers()) {
                 String address = one.getServerInfo().getAddress().getAddress().getHostAddress() + ":" + one.getServerInfo().getAddress().getPort();
-                if (address.equalsIgnoreCase(senderAddress)) {
+                if (address.equalsIgnoreCase(senderAddress))
                     server = one;
-                }
             }
-            if (server == null || server.getPlayersConnected().isEmpty()) {
+
+            if (server == null || server.getPlayersConnected().isEmpty())
                 return;
-            }
+
             for (final RegisteredServer srv : CMIB.getInstance().getProxy().getAllServers()) {
+                if (srv.getPlayersConnected().isEmpty())
+                    continue;
+
                 final ServerInfo serverInfo = srv.getServerInfo();
                 final StringBuilder players = new StringBuilder();
                 for (final Player oneP : srv.getPlayersConnected()) {
-                    if (!players.toString().isEmpty()) {
+                    if (!players.toString().isEmpty())
                         players.append(";;");
-                    }
+
                     players.append(oneP.getUsername())
                            .append("::")
                            .append(oneP.getUniqueId().toString());
@@ -86,9 +92,10 @@ public class MessageListener {
                 out2.writeUTF(info);
                 final Player proxyPlayer = server.getPlayersConnected().iterator().next();
                 ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
-                if (connection != null && connection.getServerInfo() != null) {
-                    connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out2.toByteArray());
-                }
+                if (connection == null || connection.getServerInfo() == null)
+                    continue;
+
+                connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out2.toByteArray());
             }
         }
     }
@@ -103,11 +110,15 @@ public class MessageListener {
             out.writeUTF(player.getUsername());
             out.writeUTF(event.getMessage());
             for (final RegisteredServer srv : CMIB.getInstance().getProxy().getAllServers()) {
+                if (srv.getPlayersConnected().isEmpty())
+                    continue;
+
                 final Player proxyPlayer = srv.getPlayersConnected().iterator().next();
                 ServerConnection connection = proxyPlayer.getCurrentServer().orElse(null);
-                if (connection != null && connection.getServerInfo() != null) {
-                    connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
-                }
+                if (connection == null || connection.getServerInfo() == null)
+                    continue;
+
+                connection.sendPluginMessage(CMIB.getInstance().getFromProxyChannel(), out.toByteArray());
             }
         }
     }
